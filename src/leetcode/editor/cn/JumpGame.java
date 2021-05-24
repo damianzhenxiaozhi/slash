@@ -37,16 +37,32 @@
 package leetcode.editor.cn;
 
 public class JumpGame {
-  public static void main(String[] args) {
-    Solution s = new JumpGame().new Solution();
-  }
-  
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public boolean canJump(int[] nums) {
-
+    public static void main(String[] args) {
+        Solution s = new JumpGame().new Solution();
+        int[] nums = new int[]{2, 3, 1, 1, 4};
+        System.out.println(s.canJump(nums));
     }
-}
+
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public boolean canJump(int[] nums) {
+            int N = nums.length;
+            if (N <= 1) {
+                return true;
+            }
+
+            int i = N - 2;
+            int dest = N - 1;
+            while (i > 0) {
+                if (nums[i] >= dest - i) {
+                    dest = i;
+                }
+                i--;
+            }
+
+            return nums[i] >= dest;
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
