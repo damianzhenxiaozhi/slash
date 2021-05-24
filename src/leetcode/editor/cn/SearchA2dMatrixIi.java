@@ -86,15 +86,25 @@ public class SearchA2dMatrixIi {
             }
 
             if (matrix[xMid][yMid] > target) {
-                for (int i = x1; i < xMid; i++) {
+                for (int i = xMid; i >= x1; i--) {
                     if (matrix[i][yMid] == target) {
                         return true;
+                    } else if (matrix[i][yMid] < target) {
+                        if (searchMatrix(matrix, M, N, x1, yMid, i, y2, target)) {
+                            return true;
+                        }
+                        break;
                     }
                 }
 
-                for (int j = y1; j < yMid; j++) {
+                for (int j = yMid; j >= y1; j--) {
                     if (matrix[xMid][j] == target) {
                         return true;
+                    } else if (matrix[xMid][j] < target) {
+                        if (searchMatrix(matrix, M, N, xMid, y1, x2, j, target)) {
+                            return true;
+                        }
+                        break;
                     }
                 }
 
@@ -106,26 +116,28 @@ public class SearchA2dMatrixIi {
                 for (int i = xMid + 1; i <= x2; i++) {
                     if (matrix[i][yMid] == target) {
                         return true;
+                    } else if (matrix[i][yMid] > target) {
+                        if (searchMatrix(matrix, M, N, i, y1, x2, yMid, target)) {
+                            return true;
+                        }
+                        break;
                     }
                 }
 
                 for (int j = yMid + 1; j <= y2; j++) {
                     if (matrix[xMid][j] == target) {
                         return true;
+                    } else if (matrix[xMid][j] > target) {
+                        if (searchMatrix(matrix, M, N, x1, j, xMid, y2, target)) {
+                            return true;
+                        }
+                        break;
                     }
                 }
 
                 if (searchMatrix(matrix, M, N, xMid + 1, yMid + 1, x2, y2, target)) {
                     return true;
                 }
-            }
-
-            if (searchMatrix(matrix, M, N, x1, yMid + 1, xMid - 1, y2, target)) {
-                return true;
-            }
-
-            if (searchMatrix(matrix, M, N, xMid + 1, y1, x2, yMid - 1, target)) {
-                return true;
             }
 
             return false;
