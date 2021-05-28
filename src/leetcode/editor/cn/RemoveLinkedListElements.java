@@ -38,41 +38,48 @@
 package leetcode.editor.cn;
 
 public class RemoveLinkedListElements {
-  public static void main(String[] args) {
-    Solution s = new RemoveLinkedListElements().new Solution();
-  }
-  
-//leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode removeElements(ListNode head, int val) {
-        ListNode dummyHead = new ListNode();
-        dummyHead.next = head;
+    public static void main(String[] args) {
+        Solution s = new RemoveLinkedListElements().new Solution();
+        int[] vals = new int[]{1,2,6,3,4,5,6};
+        int val = 6;
+        MyList myList = new MyList(vals);
+        ListNode head = myList.getHead();
+        head = s.removeElements(head, val);
+        MyList.print(head);
+    }
 
-        ListNode prev = dummyHead;
-        ListNode p = head;
-        while (p != null) {
-            if (p.val == val) {
-                prev.next = p.next;
-            } else {
-                prev = p;
+//leetcode submit region begin(Prohibit modification and deletion)
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     * int val;
+     * ListNode next;
+     * ListNode() {}
+     * ListNode(int val) { this.val = val; }
+     * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    class Solution {
+        public ListNode removeElements(ListNode head, int val) {
+            ListNode dummyHead = new ListNode();
+            dummyHead.next = head;
+
+            ListNode prev = dummyHead;
+            ListNode p = head;
+            while (p != null) {
+                if (p.val == val) {
+                    prev.next = p.next;
+                } else {
+                    prev = p;
+                }
+
+                p = p.next;
             }
 
-            p = p.next;
+            return dummyHead.next;
         }
-
-        return dummyHead.next;
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
