@@ -95,8 +95,7 @@ public class MyList {
             return;
         }
 
-        ListNode newNode = new ListNode(val, p);
-        prev.next = newNode;
+        prev.next = new ListNode(val, p);
         head = dummy.next;
     }
 
@@ -162,6 +161,25 @@ public class MyList {
 
     public ListNode getHead() {
         return head;
+    }
+
+    public ListNode getTail() {
+        return tail;
+    }
+
+    public void addListAtTail(ListNode p) {
+        ListNode q = p;
+        while (q.next != null) {
+            q = q.next;
+        }
+
+        tail.next = p;
+        tail = q;
+    }
+
+    public void addListAtTail(MyList list) {
+        tail.next = list.head;
+        tail = list.tail;
     }
 
     public static void print(ListNode p) {
