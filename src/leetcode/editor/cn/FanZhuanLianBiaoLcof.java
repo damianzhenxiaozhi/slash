@@ -42,18 +42,36 @@ public class FanZhuanLianBiaoLcof {
      */
     class Solution {
         public ListNode reverseList(ListNode head) {
-            ListNode newHead = null;
-            ListNode p = head;
-            while (p != null) {
-                ListNode tmp = p.next;
-
-                p.next = newHead;
-                newHead = p;
-
-                p = tmp;
+            if (head == null || head.next == null) {
+                return head;
             }
 
-            return newHead;
+            ListNode rList = reverseList(head.next);
+            ListNode p = rList;
+            while (p.next != null) {
+                p = p.next;
+            }
+            head.next = null;
+            p.next = head;
+
+            return rList;
+        }
+    }
+
+    class Solution2 {
+        public ListNode reverseList(ListNode head) {
+            ListNode pre = null;
+            ListNode p = head;
+            while (p != null) {
+                ListNode q = p.next;
+
+                p.next = pre;
+
+                pre = p;
+                p = q;
+            }
+
+            return pre;
         }
     }
 
