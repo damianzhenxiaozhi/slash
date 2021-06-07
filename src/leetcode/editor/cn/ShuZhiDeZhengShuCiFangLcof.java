@@ -41,9 +41,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ShuZhiDeZhengShuCiFangLcof {
     public static void main(String[] args) {
         Solution s = new ShuZhiDeZhengShuCiFangLcof().new Solution();
@@ -54,7 +51,7 @@ public class ShuZhiDeZhengShuCiFangLcof {
     class Solution {
         public double myPow(double x, int n) {
             if (n < 0) {
-                return 1/posPow(x, -n);
+                return 1 / (x * posPow(x, -(n + 1)));
             } else {
                 return posPow(x, n);
             }
@@ -65,7 +62,7 @@ public class ShuZhiDeZhengShuCiFangLcof {
                 return 1;
             }
 
-            double tmp = posPow(x, n/2);
+            double tmp = posPow(x, n / 2);
             if (n % 2 == 0) {
                 return tmp * tmp;
             } else {
