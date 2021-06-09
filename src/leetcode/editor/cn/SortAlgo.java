@@ -122,13 +122,13 @@ public class SortAlgo {
             return;
         }
 
-        int r = partition(a, p, q);
+        int r = partitionByTwoPointsSimple(a, p, q);
 
         quickSort(a, p, r - 1);
         quickSort(a, r + 1, q);
     }
 
-    private int partition(int[] a, int p, int q) {
+    private int partitionByTwoPoints(int[] a, int p, int q) {
         int pivot = a[q];
         int i = p;
         int j = q - 1;
@@ -138,7 +138,7 @@ public class SortAlgo {
                 i++;
             }
 
-            while (i <= j && a[j] >= pivot) {
+            while (i <= j && a[j] > pivot) {
                 j--;
             }
 
@@ -149,9 +149,50 @@ public class SortAlgo {
             }
         }
 
-        swap(a, j, q);
+        swap(a, i, q);
 
-        return j;
+        return i;
+    }
+
+    private int partitionBySlowFastPoints(int[] a, int p, int q) {
+        int pivot = a[q];
+
+        int i = p - 1;
+        int j = p;
+
+        while (j <= q - 1) {
+            if (a[j] < pivot) {
+                swap(a, i + 1, j);
+                i++;
+            }
+            j++;
+        }
+
+        swap(a, i + 1, q);
+
+        return i + 1;
+    }
+
+    private int partitionByTwoPointsSimple(int[] a, int p, int q) {
+        int pivot = a[q];
+
+        int i = p;
+        int j = q;
+        while (i < j) {
+            while (i < j && a[i] < pivot) {
+                i++;
+            }
+            a[j] = a[i];
+
+            while (i < j && a[j] >= pivot) {
+                j--;
+            }
+            a[i] = a[j];
+        }
+
+        a[i] = pivot;
+
+        return i;
     }
 
     private void swap(int[] a, int i, int j) {
