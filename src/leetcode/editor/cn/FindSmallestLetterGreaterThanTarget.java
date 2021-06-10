@@ -59,7 +59,7 @@ package leetcode.editor.cn;
 public class FindSmallestLetterGreaterThanTarget {
     public static void main(String[] args) {
         Solution s = new FindSmallestLetterGreaterThanTarget().new Solution();
-        char[] letters = new char[] {'c', 'f', 'j'};
+        char[] letters = new char[]{'c', 'f', 'j'};
         char target = 'j';
         System.out.println(s.nextGreatestLetter(letters, target));
     }
@@ -75,21 +75,21 @@ public class FindSmallestLetterGreaterThanTarget {
                 if (letters[mid] == target) {
                     if (mid == letters.length - 1) {
                         return letters[0];
-                    } else {
-                        low = mid + 1;
                     }
+
+                    low = mid + 1;
                 } else if (letters[mid] < target) {
                     if (mid == letters.length - 1) {
                         return letters[0];
-                    } else {
-                        low = mid + 1;
                     }
+
+                    low = mid + 1;
                 } else {
                     if (mid == 0 || letters[mid - 1] <= target) {
                         return letters[mid];
-                    } else {
-                        high = mid - 1;
                     }
+
+                    high = mid - 1;
                 }
             }
 
