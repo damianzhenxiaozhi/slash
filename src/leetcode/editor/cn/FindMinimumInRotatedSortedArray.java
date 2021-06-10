@@ -65,7 +65,17 @@ public class FindMinimumInRotatedSortedArray {
         }
 
         private int findMin(int[] nums, int low, int high) {
+            if (low > high) {
+                return Integer.MIN_VALUE;
+            }
 
+            int len = high - low + 1;
+            int mid = low + (high - low) / 2;
+            int pre = (mid - 1 + len) % len;
+            int next = (mid + 1) % len;
+            if (nums[mid] > nums[pre] && nums[mid] < next) {
+                return mid;
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
