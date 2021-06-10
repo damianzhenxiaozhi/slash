@@ -25,7 +25,7 @@ public class ShuZuZhongDeNiXuDuiLcof {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int reversePairs(int[] nums) {
-
+            return 0;
         }
 
         private void mergeSort(int[] arr, int p, int q) {
@@ -47,7 +47,6 @@ public class ShuZuZhongDeNiXuDuiLcof {
             int i = p, j = r, k = 0;
 
             while (i <= r-1 && j <= q) {
-                if (arr[i] )
             }
         }
     }
