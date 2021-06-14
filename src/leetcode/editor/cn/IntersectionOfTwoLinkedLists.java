@@ -61,6 +61,11 @@
 
 package leetcode.editor.cn;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class IntersectionOfTwoLinkedLists {
     public static void main(String[] args) {
         Solution s = new IntersectionOfTwoLinkedLists().new Solution();
@@ -88,6 +93,26 @@ public class IntersectionOfTwoLinkedLists {
      */
     public class Solution {
         public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+            Set<ListNode> hashTable = new HashSet<>();
+
+            ListNode p = headA;
+            while (p != null) {
+                hashTable.add(p);
+                p = p.next;
+            }
+
+            p = headB;
+            while (p != null) {
+                if (hashTable.contains(p)) {
+                    return p;
+                }
+                p = p.next;
+            }
+
+            return null;
+        }
+
+        public ListNode getIntersectionNode2(ListNode headA, ListNode headB) {
             if (headA == null || headB == null) {
                 return null;
             }

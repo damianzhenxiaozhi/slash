@@ -45,6 +45,8 @@
 package leetcode.editor.cn;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TwoSum {
   public static void main(String[] args) {
@@ -58,6 +60,28 @@ public class TwoSum {
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
+        int n = nums.length;
+
+        Map<Integer, Integer> hashTable = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            hashTable.put(nums[i], i);
+        }
+
+        // 0..N-1
+        for (int i = 0; i < n; i++) {
+            if (hashTable.containsKey(target-nums[i])) {
+                int pos = hashTable.get(target - nums[i]);
+                if (pos != i) {
+                    return new int[]{i, pos};
+
+                }
+            }
+        }
+
+        return new int[0];
+    }
+
+    public int[] twoSum2(int[] nums, int target) {
         int N = nums.length;
         // 0..N-1
         for (int i = 0; i < N; i++) {

@@ -23,6 +23,8 @@
 package leetcode.editor.cn;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ValidAnagram {
     public static void main(String[] args) {
@@ -35,6 +37,34 @@ public class ValidAnagram {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isAnagram(String s, String t) {
+            Map<Character, Integer> charCount = new HashMap<>();
+
+            for (char c : s.toCharArray()) {
+                if (charCount.containsKey(c)) {
+                    int newCount = charCount.get(c) + 1;
+                    charCount.put(c, newCount);
+                } else {
+                    charCount.put(c, 1);
+                }
+            }
+
+            for (char c : t.toCharArray()) {
+                if (charCount.containsKey(c)) {
+                    int newCount = charCount.get(c) - 1;
+                    if (newCount == 0) {
+                        charCount.remove(c);
+                    } else {
+                        charCount.put(c, newCount);
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            return charCount.size() == 0;
+        }
+
+        public boolean isAnagram2(String s, String t) {
             char[] a = s.toCharArray();
             char[] b = t.toCharArray();
 

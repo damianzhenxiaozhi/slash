@@ -55,6 +55,8 @@
 
 package leetcode.editor.cn;
 
+import java.util.HashSet;
+
 public class LinkedListCycle {
     public static void main(String[] args) {
         Solution s = new LinkedListCycle().new Solution();
@@ -83,6 +85,22 @@ public class LinkedListCycle {
      */
     public class Solution {
         public boolean hasCycle(ListNode head) {
+            HashSet<ListNode> hashTable = new HashSet<>();
+
+            ListNode p = head;
+            while (p != null) {
+                if (hashTable.contains(p)) {
+                    return true;
+                }
+
+                hashTable.add(p);
+                p = p.next;
+            }
+
+            return false;
+        }
+
+        public boolean hasCycle2(ListNode head) {
             if (head == null || head.next == null) {
                 return false;
             }
