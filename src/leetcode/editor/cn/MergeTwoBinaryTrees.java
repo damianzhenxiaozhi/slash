@@ -30,56 +30,58 @@
 package leetcode.editor.cn;
 
 public class MergeTwoBinaryTrees {
-  public static void main(String[] args) {
-    Solution s = new MergeTwoBinaryTrees().new Solution();
-  }
- 
+    public static void main(String[] args) {
+        Solution s = new MergeTwoBinaryTrees().new Solution();
+    }
+
 //leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-        TreeNode dummyNode = new TreeNode();
 
-        mergeTrees_r(dummyNode, 0, root1, root2);
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     * int val;
+     * TreeNode left;
+     * TreeNode right;
+     * TreeNode() {}
+     * TreeNode(int val) { this.val = val; }
+     * TreeNode(int val, TreeNode left, TreeNode right) {
+     * this.val = val;
+     * this.left = left;
+     * this.right = right;
+     * }
+     * }
+     */
+    class Solution {
+        public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+            TreeNode dummyNode = new TreeNode();
 
-        return dummyNode.left;
-    }
+            mergeTrees_r(dummyNode, true, root1, root2);
 
-    private void mergeTrees_r(TreeNode preNode, int i, TreeNode root1, TreeNode root2) {
-        TreeNode node = getNode(root1, root2);
-        if (i == 0) {
-            preNode.left = node;
-        } else {
-            preNode.right = node;
+            return dummyNode.left;
         }
 
-        mergeTrees_r(node, 0, root1.left, root2.left);
-        mergeTrees_r(node, 1, root1.right, root2.right);
-    }
+        private void mergeTrees_r(TreeNode preNode, boolean left, TreeNode root1, TreeNode root2) {
+            if (root1 != null && root2 != null) {
+                root1.val = root1.val + root2.val;
 
-    private TreeNode getNode(TreeNode root1, TreeNode root2) {
-        if (root1 != null && root2 != null) {
-            root1.val = root1.val + root2.val;
-            return root1;
-        } else {
-            return root1 != null ? root1 : root2;
+                if (left) {
+                    preNode.left = root1;
+                } else {
+                    preNode.right = root1;
+                }
+
+                mergeTrees_r(root1, true, root1.left, root2.left);
+                mergeTrees_r(root1, false, root1.right, root2.right);
+            } else {
+                TreeNode curNode = root1 != null ? root1 : root2;
+                if (left) {
+                    preNode.left = curNode;
+                } else {
+                    preNode.right = curNode;
+                }
+            }
         }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
