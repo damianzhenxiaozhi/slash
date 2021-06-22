@@ -53,33 +53,24 @@ public class MergeTwoBinaryTrees {
      */
     class Solution {
         public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
-            TreeNode dummyNode = new TreeNode();
-
-            mergeTrees_r(dummyNode, true, root1, root2);
-
-            return dummyNode.left;
-        }
-
-        private void mergeTrees_r(TreeNode preNode, boolean left, TreeNode root1, TreeNode root2) {
-            if (root1 != null && root2 != null) {
-                root1.val = root1.val + root2.val;
-
-                if (left) {
-                    preNode.left = root1;
-                } else {
-                    preNode.right = root1;
-                }
-
-                mergeTrees_r(root1, true, root1.left, root2.left);
-                mergeTrees_r(root1, false, root1.right, root2.right);
-            } else {
-                TreeNode curNode = root1 != null ? root1 : root2;
-                if (left) {
-                    preNode.left = curNode;
-                } else {
-                    preNode.right = curNode;
-                }
+            if (root1 == null) {
+                return root2;
             }
+
+            if (root2 == null) {
+                return root1;
+            }
+
+            TreeNode mergeLeft = mergeTrees(root1.left, root2.left);
+            TreeNode mergeRight = mergeTrees(root1.right, root2.right);
+
+            TreeNode newRoot = new TreeNode();
+            newRoot.val = root1.val + root2.val;
+
+            newRoot.left = mergeLeft;
+            newRoot.right = mergeRight;
+
+            return newRoot;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
