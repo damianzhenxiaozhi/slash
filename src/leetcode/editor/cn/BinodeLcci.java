@@ -27,7 +27,7 @@ package leetcode.editor.cn;
 public class BinodeLcci {
     public static void main(String[] args) {
         Solution s = new BinodeLcci().new Solution();
-        MyBinaryTree tree = new MyBinaryTree(new Integer[] {4,2,5,1,3,null,6,0});
+        MyBinaryTree tree = new MyBinaryTree(new Integer[] {4,2,5,1,3,null,7,0,null,null,null,null,null,6,null});
         TreeNode root = s.convertBiNode(tree.getRoot());
         while (root != null) {
             System.out.print(root.val + ",");
@@ -66,9 +66,10 @@ public class BinodeLcci {
 
             inorder(left);
 
+            tail.left = null;
             tail.right = root;
             tail = root;
-            tail.left = null;
+//            tail.left = null;
 
             inorder(right);
         }

@@ -1,5 +1,8 @@
 package leetcode.editor.cn;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @author fanzhen
  * @version 1.0
@@ -55,5 +58,31 @@ public class MyBinaryTree {
         }
 
         return getByValRec(root.right, val);
+    }
+
+    public static void print(TreeNode root) {
+        if (root == null) {
+            System.out.println("[]");
+            return;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int count = queue.size();
+            System.out.print("[");
+            while (count-- > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+
+                System.out.print(node.val + ", ");
+            }
+            System.out.println("]");
+        }
     }
 }
