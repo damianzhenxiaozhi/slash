@@ -58,11 +58,6 @@ public class FindMedianFromDataStream {
         }
 
         public void addNum(int num) {
-            if (maxHeap.isEmpty()) {
-                maxHeap.offer(num);
-                return;
-            }
-
             int maxHeapCount = maxHeap.size();
             int minHeapCount = minHeap.size();
 
