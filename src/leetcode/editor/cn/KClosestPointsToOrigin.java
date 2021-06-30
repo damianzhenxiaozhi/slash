@@ -39,17 +39,57 @@
 
 package leetcode.editor.cn;
 
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
 public class KClosestPointsToOrigin {
-  public static void main(String[] args) {
-    Solution s = new KClosestPointsToOrigin().new Solution();
-  }
- 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int[][] kClosest(int[][] points, int k) {
-
+    public static void main(String[] args) {
+        Solution s = new KClosestPointsToOrigin().new Solution();
+        int[][] points = new int[][]{{3,3},{5,-1},{-2,4}};
+        int k = 2;
+        System.out.println(Arrays.deepToString(s.kClosest(points, k)));
     }
-}
-//leetcode submit region end(Prohibit modification and deletion)
 
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        private class Element {
+            private int distance;
+            private int index;
+
+            public Element(int distance, int index) {
+                this.distance = distance;
+                this.index = index;
+            }
+        }
+
+        public int[][] kClosest(int[][] points, int k) {
+            PriorityQueue<Element> maxHeap = new PriorityQueue<>((a, b) -> b.distance - a.distance);
+            int count = 0;
+
+            for (int i = 0; i < points.length; i++) {
+                int distance = distance(points[i][0], points[i][1]);
+                if (count++ < k) {
+                    maxHeap.add(new Element(distance, i));
+                } else {
+                    if (distance < maxHeap.peek().distance) {
+                        maxHeap.add(new Element(distance, i));
+                        maxHeap.remove();
+                    }
+                }
+            }
+
+            int[][] result = new int[k][2];
+            for (int i = 0; i < k; i++) {
+                int index = maxHeap.remove().index;
+                result[i] = points[index];
+            }
+
+            return result;
+        }
+
+        private int distance(int x, int y) {
+            return x * x + y * y;
+        }
+    }
+//leetcode submit region end(Prohibit modification and deletion)
 }
