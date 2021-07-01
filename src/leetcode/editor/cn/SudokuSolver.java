@@ -91,10 +91,16 @@ public class SudokuSolver {
 
             int i = k / n;
             int j = k % n;
-            while (board[i][j] != '.') {
+            while (i < n && j < n && board[i][j] != '.') {
                 k++;
                 i = k / n;
                 j = k % n;
+            }
+
+            // 没有需要决策的阶段，说明决策完
+            if (i >= n || j >= n) {
+                find = true;
+                return;
             }
 
             char[] canBeSelected = calcCanBeSelected(board, n, i, j);
@@ -109,16 +115,16 @@ public class SudokuSolver {
         }
 
         private char[] calcCanBeSelected(char[][] board, int n, int i, int j) {
-            char[] nums = new char[10];
-            for (int k = 0; k < 10; k++) {
-                nums[k] = (char) ('0' + k);
+            char[] nums = new char[9];
+            for (int k = 0; k < 9; k++) {
+                nums[k] = (char) ('1' + k);
             }
 
             // 排除行的数字
             for (int k = 0; k < n; k++) {
                 char c = board[i][k];
                 if (k != j && c != '.') {
-                    nums[c - '0'] = '.';
+                    nums[c - '1'] = '.';
                 }
             }
 
@@ -126,18 +132,18 @@ public class SudokuSolver {
             for (int k = 0; k < n; k++) {
                 char c = board[k][j];
                 if (k != i && c != '.') {
-                    nums[c - '0'] = '.';
+                    nums[c - '1'] = '.';
                 }
             }
 
             // 排除九宫格的数字
-            int l_start = i / 3;
-            int c_start = j / 3;
+            int l_start = 3 * (i / 3);
+            int c_start = 3 * (j / 3);
             for (int p = l_start; p < l_start + 3; p++) {
                 for (int q = c_start; q < c_start + 3; q++) {
                     char c = board[p][q];
                     if (p != i && q != j && c != '.') {
-                        nums[c - '0'] = '.';
+                        nums[c - '1'] = '.';
                     }
                 }
             }
