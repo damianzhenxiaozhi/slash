@@ -52,15 +52,112 @@
 
 package leetcode.editor.cn;
 
+import java.util.Arrays;
+
 public class SudokuSolver {
     public static void main(String[] args) {
         Solution s = new SudokuSolver().new Solution();
+        char[][] board = new char[][]{
+                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        s.solveSudoku(board);
+
+        System.out.println(Arrays.deepToString(board));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        public void solveSudoku(char[][] board) {
+        private boolean find = false;
 
+        public void solveSudoku(char[][] board) {
+            int n = board.length;
+            backTrace(board, n, 0);
+        }
+
+        private void backTrace(char[][] board, int n, int k) {
+            // 决策完，找到唯一解
+            if (k >= n * n) {
+                find = true;
+                return;
+            }
+
+            int i = k / n;
+            int j = k % n;
+            while (board[i][j] != '.') {
+                k++;
+                i = k / n;
+                j = k % n;
+            }
+
+            char[] canBeSelected = calcCanBeSelected(board, n, i, j);
+            for (char c : canBeSelected) {
+                board[i][j] = c;
+                backTrace(board, n, k + 1);
+                if (find) {
+                    return;
+                }
+                board[i][j] = '.';
+            }
+        }
+
+        private char[] calcCanBeSelected(char[][] board, int n, int i, int j) {
+            char[] nums = new char[10];
+            for (int k = 0; k < 10; k++) {
+                nums[k] = (char) ('0' + k);
+            }
+
+            // 排除行的数字
+            for (int k = 0; k < n; k++) {
+                char c = board[i][k];
+                if (k != j && c != '.') {
+                    nums[c - '0'] = '.';
+                }
+            }
+
+            // 排除列的数字
+            for (int k = 0; k < n; k++) {
+                char c = board[k][j];
+                if (k != i && c != '.') {
+                    nums[c - '0'] = '.';
+                }
+            }
+
+            // 排除九宫格的数字
+            int l_start = i / 3;
+            int c_start = j / 3;
+            for (int p = l_start; p < l_start + 3; p++) {
+                for (int q = c_start; q < c_start + 3; q++) {
+                    char c = board[p][q];
+                    if (p != i && q != j && c != '.') {
+                        nums[c - '0'] = '.';
+                    }
+                }
+            }
+
+            int count = 0;
+            for (int k = 0; k < nums.length; k++) {
+                if (nums[k] != '.') {
+                    count++;
+                }
+            }
+
+            char[] result = new char[count];
+            int p = 0;
+            for (int k = 0; k < nums.length; k++) {
+                if (nums[k] != '.') {
+                    result[p++] = nums[k];
+                }
+            }
+
+            return result;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
