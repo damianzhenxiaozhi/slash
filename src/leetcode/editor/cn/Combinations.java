@@ -18,19 +18,43 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Combinations {
-  public static void main(String[] args) {
-    Solution s = new Combinations().new Solution();
-  }
- 
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public List<List<Integer>> combine(int n, int k) {
-
+    public static void main(String[] args) {
+        Solution s = new Combinations().new Solution();
+        int n = 3, k = 3;
+        List<List<Integer>> result = s.combine(n, k);
+        System.out.println(result.toString());
     }
-}
+
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        private List<List<Integer>> result = new ArrayList<>();
+
+        public List<List<Integer>> combine(int n, int k) {
+            backtrace(1, new int[k], 0, n, k);
+            return result;
+        }
+
+        private void backtrace(int i, int[] path, int c, int n, int k) {
+            if (i > n || c == k) {
+                if (c == k) {
+                    List<Integer> snapshot = new ArrayList<>(4);
+                    for (int j = 0; j < k; j++) {
+                        snapshot.add(path[j]);
+                    }
+                    result.add(snapshot);
+                }
+                return;
+            }
+
+            backtrace(i + 1, path, c, n, k);
+            path[c] = i;
+            backtrace(i + 1, path, c + 1, n, k);
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
