@@ -69,29 +69,27 @@ public class SubsetsIi {
                 i = i + 1;
             }
 
-            backTrace(0, distincts, counts, n, new ArrayList<>());
+            backtrace(0, distincts, counts, new ArrayList<>());
 
             return result;
         }
 
-        private void backTrace(int k, int[] nums, int[] counts, int n, List<Integer> path) {
-            if (k >= n) {
+        private void backtrace(int k, int[] nums, int[] counts, List<Integer> path) {
+            if (k >= nums.length) {
                 List<Integer> snapshot = new ArrayList<>(path);
                 result.add(snapshot);
                 return;
             }
 
-            int num = nums[k];
-            int count = counts[k];
-            if (count > 0) {
-                counts[k]--;
-                path.add(num);
-                backTrace(k, nums, counts, n, path);
-                counts[k]++;
-                path.remove(path.size() - 1);
-                backTrace(k + 1, nums, counts, n, path);
-            } else {
-                backTrace(k + 1, nums, counts, n, path);
+            for (int count = 0; count <= counts[k]; count++) {
+                for (int i = 0; i < count; i++) {
+                    path.add(nums[k]);
+                }
+                backtrace(k+1, nums, counts, path);
+                for (int i = 0; i < count; i++) {
+                    path.remove(path.size() - 1);
+                }
+
             }
         }
     }
