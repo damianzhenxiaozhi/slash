@@ -38,15 +38,44 @@ import java.util.List;
 public class PalindromePartitioning {
     public static void main(String[] args) {
         Solution s = new PalindromePartitioning().new Solution();
-        String str = "";
+        String str = "aab";
         System.out.println(s.partition(str));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        private List<List<Integer>> result = new ArrayList<>();
-        public List<List<String>> partition(String s) {
+        private List<List<String>> result = new ArrayList<>();
 
+        public List<List<String>> partition(String s) {
+            char[] chars = s.toCharArray();
+            backtrace(chars, 0, new ArrayList<>());
+            return result;
+        }
+
+        private void backtrace(char[] chars, int k, List<String> path) {
+            if (k == chars.length) {
+                result.add(new ArrayList<>(path));
+                return;
+            }
+
+            for (int i = k; i < chars.length; i++) {
+                if (isPalindrome(chars, k, i)) {
+                    path.add(new String(chars, k, i - k + 1));
+                    backtrace(chars, i + 1, path);
+                    path.remove(path.size() - 1);
+                }
+            }
+        }
+
+        private boolean isPalindrome(char[] chars, int i, int j) {
+            while (i < j) {
+                if (chars[i] != chars[j]) {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+            return true;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
