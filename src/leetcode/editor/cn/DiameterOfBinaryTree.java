@@ -26,7 +26,7 @@ package leetcode.editor.cn;
 public class DiameterOfBinaryTree {
     public static void main(String[] args) {
         Solution s = new DiameterOfBinaryTree().new Solution();
-        MyBinaryTree tree = new MyBinaryTree(new Integer[] {1,2,3,4,5,null,null});
+        MyBinaryTree tree = new MyBinaryTree(new Integer[]{1, 2, 3, 4, 5, null, null});
         System.out.println(s.diameterOfBinaryTree(tree.getRoot()));
     }
 

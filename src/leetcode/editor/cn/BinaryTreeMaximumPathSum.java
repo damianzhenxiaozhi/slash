@@ -36,12 +36,10 @@
 
 package leetcode.editor.cn;
 
-import java.util.List;
-
 public class BinaryTreeMaximumPathSum {
     public static void main(String[] args) {
         Solution s = new BinaryTreeMaximumPathSum().new Solution();
-        MyBinaryTree tree = new MyBinaryTree(new Integer[]{-1,-2,10,-6,null,-3,-6});
+        MyBinaryTree tree = new MyBinaryTree(new Integer[]{2, -1});
         System.out.println(s.maxPathSum(tree.getRoot()));
     }
 
@@ -63,14 +61,26 @@ public class BinaryTreeMaximumPathSum {
      * }
      */
     class Solution {
+        private int maxPath;
+
         public int maxPathSum(TreeNode root) {
-            return 0;
+            maxPath = Integer.MIN_VALUE;
+            getPathSum(root);
+            return maxPath;
         }
 
-        List<List<Integer>> myPath(TreeNode root) {
-            return null;
-        }
+        private int getPathSum(TreeNode root) {
+            if (root == null) {
+                return 0;
+            }
 
+            int left = Math.max(0, getPathSum(root.left));
+            int right = Math.max(0, getPathSum(root.right));
+
+            maxPath = Math.max(maxPath, left + right + root.val);
+
+            return Math.max(left, right) + root.val;
+        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
