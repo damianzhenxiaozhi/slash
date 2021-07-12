@@ -42,7 +42,9 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CourseSchedule {
     public static void main(String[] args) {
@@ -75,9 +77,30 @@ public class CourseSchedule {
                 inDegree[prerequisites[i][0]]++;
             }
 
-            dfs(inDegree, new boolean[numCourses], 0);
+//            dfs(inDegree, new boolean[numCourses], 0);
 
-            return canFinish;
+            List<Integer> zeroDegree = new ArrayList<>();
+            for (int i = 0; i < inDegree.length; i++) {
+                if (inDegree[i] == 0) {
+                    zeroDegree.add(i);
+                }
+            }
+
+            int count = 0;
+            while (!zeroDegree.isEmpty()) {
+                int index = zeroDegree.remove(0);
+                count++;
+                for (int i = 0; i < adj[index].size(); i++) {
+                    inDegree[adj[index].get(i)]--;
+                    if (inDegree[adj[index].get(i)] == 0) {
+                        zeroDegree.add(adj[index].get(i));
+                    }
+                }
+            }
+
+            return count == numCourses;
+
+//            return canFinish;
         }
 
         private void dfs(int[] inDegree, boolean[] visited, int count) {
