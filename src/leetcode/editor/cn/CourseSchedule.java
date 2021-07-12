@@ -42,34 +42,45 @@
 
 package leetcode.editor.cn;
 
+import java.util.LinkedList;
+
 public class CourseSchedule {
     public static void main(String[] args) {
         Solution s = new CourseSchedule().new Solution();
+        long begin = System.currentTimeMillis();
         int numCourses = 20;
-        int[][] prerequisites = new int[][] {{0,10},{3,18},{5,5},{6,11},{11,14},{13,1},{15,1},{17,4}};
+        int[][] prerequisites = new int[][] {{5,5}};
         System.out.println(s.canFinish(numCourses, prerequisites));
+        System.out.println(System.currentTimeMillis() - begin);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        boolean canFinish = false;
+        private boolean canFinish = false;
+        private LinkedList<Integer>[] adj;
 
         public boolean canFinish(int numCourses, int[][] prerequisites) {
-            if (prerequisites.length == 0) {
+            if (prerequisites.length == 0 || numCourses == 0) {
                 return true;
+            }
+
+            adj = new LinkedList[numCourses];
+            for (int i = 0; i < numCourses; i++) {
+                adj[i] = new LinkedList<>();
             }
 
             int[] inDegree = new int[numCourses];
             for (int i = 0; i < prerequisites.length; i++) {
+                adj[prerequisites[i][1]].add(prerequisites[i][0]);
                 inDegree[prerequisites[i][0]]++;
             }
 
-            dfs(prerequisites, inDegree, new boolean[numCourses], 0);
+            dfs(inDegree, new boolean[numCourses], 0);
 
             return canFinish;
         }
 
-        private void dfs(int[][] prerequisites, int[] inDegree, boolean[] visited, int count) {
+        private void dfs(int[] inDegree, boolean[] visited, int count) {
             if (count == inDegree.length) {
                 canFinish = true;
                 return;
@@ -81,20 +92,13 @@ public class CourseSchedule {
                 }
 
                 visited[i] = true;
-                for (int j = 0; j < prerequisites.length; j++) {
-                    if (prerequisites[j][1] == i) {
-                        inDegree[prerequisites[j][0]]--;
-                    }
+                for (int j = 0; j < adj[i].size(); j++) {
+                    inDegree[adj[i].get(j)]--;
                 }
 
-                dfs(prerequisites, inDegree, visited, count + 1);
+                dfs(inDegree, visited, count + 1);
 
-                visited[i] = false;
-                for (int j = 0; j < prerequisites.length; j++) {
-                    if (prerequisites[j][1] == i) {
-                        inDegree[prerequisites[j][0]]++;
-                    }
-                }
+                // 不能回溯，路径太多会超时
             }
         }
     }
