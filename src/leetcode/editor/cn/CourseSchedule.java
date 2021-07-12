@@ -37,7 +37,7 @@
 // prerequisites[i] 中的所有课程对 互不相同 
 // 
 // Related Topics 深度优先搜索 广度优先搜索 图 拓扑排序 
-// 👍 858 👎 0
+// 👍 863 👎 0
 
 
 package leetcode.editor.cn;
@@ -45,12 +45,57 @@ package leetcode.editor.cn;
 public class CourseSchedule {
     public static void main(String[] args) {
         Solution s = new CourseSchedule().new Solution();
+        int numCourses = 20;
+        int[][] prerequisites = new int[][] {{0,10},{3,18},{5,5},{6,11},{11,14},{13,1},{15,1},{17,4}};
+        System.out.println(s.canFinish(numCourses, prerequisites));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        public boolean canFinish(int numCourses, int[][] prerequisites) {
+        boolean canFinish = false;
 
+        public boolean canFinish(int numCourses, int[][] prerequisites) {
+            if (prerequisites.length == 0) {
+                return true;
+            }
+
+            int[] inDegree = new int[numCourses];
+            for (int i = 0; i < prerequisites.length; i++) {
+                inDegree[prerequisites[i][0]]++;
+            }
+
+            dfs(prerequisites, inDegree, new boolean[numCourses], 0);
+
+            return canFinish;
+        }
+
+        private void dfs(int[][] prerequisites, int[] inDegree, boolean[] visited, int count) {
+            if (count == inDegree.length) {
+                canFinish = true;
+                return;
+            }
+
+            for (int i = 0; i < inDegree.length; i++) {
+                if (inDegree[i] != 0 || visited[i]) {
+                    continue;
+                }
+
+                visited[i] = true;
+                for (int j = 0; j < prerequisites.length; j++) {
+                    if (prerequisites[j][1] == i) {
+                        inDegree[prerequisites[j][0]]--;
+                    }
+                }
+
+                dfs(prerequisites, inDegree, visited, count + 1);
+
+                visited[i] = false;
+                for (int j = 0; j < prerequisites.length; j++) {
+                    if (prerequisites[j][1] == i) {
+                        inDegree[prerequisites[j][0]]++;
+                    }
+                }
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
