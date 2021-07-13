@@ -153,7 +153,9 @@ public class CourseSchedule {
             passedCourses.add(start);
             path.add(start);
             for (int j = 0; j < adj[start].size(); j++) {
-                dfsCheck(adj[start].get(j), path);
+                if (!passedCourses.contains(adj[start].get(j))) {
+                    dfsCheck(adj[start].get(j), path);
+                }
             }
             path.remove(start);
         }
