@@ -84,12 +84,7 @@ public class CoinChange2 {
                 }
             }
 
-            int result = 0;
-            for (int i = 0; i < n; i++) {
-                result += dp[i][amount];
-            }
-
-            return result;
+            return dp[n-1][amount];
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
