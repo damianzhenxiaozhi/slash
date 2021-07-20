@@ -37,7 +37,7 @@
 // 0 <= nums[i] <= 1000 
 // 
 // Related Topics 数组 动态规划 
-// 👍 726 👎 0
+// 👍 722 👎 0
 
 
 package leetcode.editor.cn;
@@ -45,8 +45,7 @@ package leetcode.editor.cn;
 public class HouseRobberIi {
     public static void main(String[] args) {
         Solution s = new HouseRobberIi().new Solution();
-        int[] nums = {2, 3, 2};
-
+        int[] nums = {2,3,2};
         System.out.println(s.rob(nums));
     }
 
@@ -56,33 +55,35 @@ public class HouseRobberIi {
             if (nums.length == 0) {
                 return 0;
             }
-
             if (nums.length == 1) {
                 return nums[0];
             }
-
-            int[] dp = new int[nums.length - 1];
-            dp[0] = nums[0];
-            for (int i = 1; i < nums.length - 1; i++) {
-                if (i - 2 >= 0) {
-                    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-                } else {
-                    dp[i] = Math.max(dp[i - 1], nums[i]);
-                }
+            if (nums.length == 2) {
+                return Math.max(nums[0], nums[1]);
+            }
+            if (nums.length == 3) {
+                return Math.max(Math.max(nums[0], nums[1]), nums[2]);
             }
 
-            int max = nums.length - 3 >= 0 ? Math.max(dp[nums.length - 3], dp[nums.length - 2]) : dp[nums.length - 2];
-            dp[0] = nums[1];
-            for (int i = 1; i < nums.length - 1; i++) {
-                if (i - 2 >= 0) {
-                    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i + 1]);
-                } else {
-                    dp[i] = Math.max(dp[i - 1], nums[i + 1]);
-                }
-            }
-            int max1 = nums.length - 3 >= 0 ? Math.max(dp[nums.length - 3], dp[nums.length - 2]) : dp[nums.length - 2];
+            // 1st no rob
+            int a = robAny(nums, 1, nums.length - 1);
+            // 1st rob
+            int b = nums[0] + robAny(nums, 2, nums.length - 2);
 
-            return Math.max(max, max1);
+            return Math.max(a, b);
+        }
+
+        private int robAny(int[] nums, int a, int b) {
+            int n = b - a + 1;
+            int[][] dp = new int[n][2];
+            dp[0][0] = 0;
+            dp[0][1] = nums[a];
+            for (int i = 1; i < n; i++) {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
+                dp[i][1] = dp[i - 1][0] + nums[a + i];
+            }
+
+            return Math.max(dp[n - 1][0], dp[n - 1][1]);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
