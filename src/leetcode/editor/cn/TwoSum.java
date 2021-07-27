@@ -44,58 +44,81 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TwoSum {
-  public static void main(String[] args) {
-    Solution s = new TwoSum().new Solution();
-    int[] nums = new int[] {2, 5, 3, 8};
-    int target = 9;
-    int[] result = s.twoSum(nums, target);
-    System.out.println(Arrays.toString(result));
-  }
-  
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int n = nums.length;
-
-        Map<Integer, Integer> hashTable = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            hashTable.put(nums[i], i);
-        }
-
-        // 0..N-1
-        for (int i = 0; i < n; i++) {
-            if (hashTable.containsKey(target-nums[i])) {
-                int pos = hashTable.get(target - nums[i]);
-                if (pos != i) {
-                    return new int[]{i, pos};
-
-                }
-            }
-        }
-
-        return new int[0];
+    public static void main(String[] args) {
+        Solution s = new TwoSum().new Solution();
+        int[] nums = new int[]{2, 5, 3, 8};
+        int target = 9;
+        int[] result = s.twoSum(nums, target);
+        System.out.println(Arrays.toString(result));
     }
 
-    public int[] twoSum2(int[] nums, int target) {
-        int N = nums.length;
-        // 0..N-1
-        for (int i = 0; i < N; i++) {
-            // i+1..N-1
-            for (int j = i + 1; j < N; j++) {
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public int[] twoSum(int[] nums, int target) {
+            Map<Integer, List<Integer>> vToIndex = new HashMap<>();
+            for (int i = 0; i < nums.length; i++) {
+                vToIndex.computeIfAbsent(nums[i], e -> new ArrayList<>()).add(i);
+            }
+
+            Arrays.sort(nums);
+            int i = 0, j = nums.length - 1;
+            while (i < j) {
                 if (nums[i] + nums[j] == target) {
-                    return new int[] {i, j};
+                    if (nums[i] == nums[j]) {
+                        return new int[] {vToIndex.get(nums[i]).get(0), vToIndex.get(nums[j]).get(1)};
+                    } else {
+                        return new int[] {vToIndex.get(nums[i]).get(0), vToIndex.get(nums[j]).get(0)};
+                    }
+                } else if (nums[i] + nums[j] < target) {
+                    i++;
+                } else {
+                    j--;
                 }
             }
+
+            return new int[0];
         }
 
-        return new int[0];
+        public int[] twoSum3(int[] nums, int target) {
+            int n = nums.length;
+
+            Map<Integer, Integer> hashTable = new HashMap<>();
+            for (int i = 0; i < n; i++) {
+                hashTable.put(nums[i], i);
+            }
+
+            // 0..N-1
+            for (int i = 0; i < n; i++) {
+                if (hashTable.containsKey(target - nums[i])) {
+                    int pos = hashTable.get(target - nums[i]);
+                    if (pos != i) {
+                        return new int[]{i, pos};
+
+                    }
+                }
+            }
+
+            return new int[0];
+        }
+
+        public int[] twoSum2(int[] nums, int target) {
+            int N = nums.length;
+            // 0..N-1
+            for (int i = 0; i < N; i++) {
+                // i+1..N-1
+                for (int j = i + 1; j < N; j++) {
+                    if (nums[i] + nums[j] == target) {
+                        return new int[]{i, j};
+                    }
+                }
+            }
+
+            return new int[0];
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
