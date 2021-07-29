@@ -64,14 +64,36 @@ import java.util.Arrays;
 public class SortColors {
     public static void main(String[] args) {
         Solution s = new SortColors().new Solution();
-        int[] nums = new int[]{1, 0, 1};
+        int[] nums = new int[]{2, 0, 2, 1, 1, 0};
         s.sortColors(nums);
         System.out.println(Arrays.toString(nums));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        // tow points
         public void sortColors(int[] nums) {
+            int p0 = 0, p1 = 0, p2 = 0;
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] == 0) {
+                    swap(nums, p0, i);
+                    swap(nums, p1, i);
+                    p0++;
+                    p1++;
+                    p2++;
+                } else if (nums[i] == 1) {
+                    swap(nums, p1, i);
+                    p1++;
+                    p2++;
+                } else if (nums[i] == 2) {
+                    swap(nums, p2, i);
+                    p2++;
+                }
+            }
+        }
+
+        // partition
+        public void sortColors2(int[] nums) {
             int n = nums.length;
 
             int r = partition(nums, 0, n - 1, 1);

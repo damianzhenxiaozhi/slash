@@ -34,7 +34,28 @@ public class DiaoZhengShuZuShunXuShiQiShuWeiYuOuShuQianMianLcof {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        // tow points
         public int[] exchange(int[] nums) {
+            int odd = 0, even = 0;
+            while (even < nums.length) {
+                if (nums[even] % 2 != 0) {
+                    swap(nums, even, odd);
+                    odd++;
+                }
+                even++;
+            }
+
+            return nums;
+        }
+
+        private void swap(int[] nums, int i, int j) {
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
+
+        // merge sort
+        public int[] exchange2(int[] nums) {
             int n = nums.length;
 
             mergeSort(nums, 0, n - 1);
@@ -78,6 +99,7 @@ public class DiaoZhengShuZuShunXuShiQiShuWeiYuOuShuQianMianLcof {
             }
         }
 
+        // copy array
         public int[] exchange1(int[] nums) {
             int n = nums.length;
             int[] tmp = new int[n];

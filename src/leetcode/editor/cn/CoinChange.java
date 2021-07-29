@@ -57,14 +57,33 @@ package leetcode.editor.cn;
 public class CoinChange {
     public static void main(String[] args) {
         Solution s = new CoinChange().new Solution();
-        int[] coins = {1};
-        int amount = 0;
+        int[] coins = {1, 2, 5};
+        int amount = 11;
         System.out.println(s.coinChange(coins, amount));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int coinChange(int[] coins, int amount) {
+            int[] dp = new int[amount+1];
+            for (int i = 1; i <= amount; i++) {
+                dp[i] = Integer.MAX_VALUE;
+            }
+
+            for (int i = 1; i <= amount; i++) {
+                for (int j = 0; j < coins.length; j++) {
+                    if (i - coins[j] >= 0 && dp[i-coins[j]] != Integer.MAX_VALUE
+                            && dp[i-coins[j]] + 1 < dp[i]) {
+                        dp[i] = dp[i-coins[j]] + 1;
+                    }
+                }
+            }
+
+            return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+        }
+
+        // 完全背包
+        public int coinChange2(int[] coins, int amount) {
             int n = coins.length;
             int[][] dp = new int[n][amount + 1];
             for (int i = 0; i < n; i++) {
@@ -79,16 +98,15 @@ public class CoinChange {
 
             for (int i = 1; i < n; i++) {
                 for (int j = 0; j <= amount; j++) {
-                    int min = Integer.MAX_VALUE;
-                    int k = 0;
-                    while (j - coins[i] * k >= 0) {
-                        if (dp[i - 1][j - coins[i] * k] != -1) {
-                            min = Math.min(min, (k + dp[i - 1][j - coins[i] * k]));
+                    int curMaxNum = j / coins[i];
+                    for (int k = 0; k <= curMaxNum; k++) {
+                        if (dp[i-1][j - k * coins[i]] != -1) {
+                            if (dp[i][j] == -1) {
+                                dp[i][j] = k + dp[i-1][j - k * coins[i]];
+                            } else if (k + dp[i-1][j - k * coins[i]] < dp[i][j]) {
+                                dp[i][j] = k + dp[i-1][j - k * coins[i]];
+                            }
                         }
-                        k++;
-                    }
-                    if (min != Integer.MAX_VALUE) {
-                        dp[i][j] = min;
                     }
                 }
             }

@@ -45,6 +45,7 @@
 // Related Topics 字符串 动态规划 
 // 👍 1721 👎 0
 
+package leetcode.editor.cn;
 
 public class EditDistance {
     public static void main(String[] args) {
