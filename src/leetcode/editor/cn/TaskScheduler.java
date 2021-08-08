@@ -53,8 +53,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class TaskScheduler {
     public static void main(String[] args) {
@@ -67,6 +66,54 @@ public class TaskScheduler {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int leastInterval(char[] tasks, int n) {
+            if (n == 0) {
+                return tasks.length;
+            }
+
+            Queue<Integer> heap = new PriorityQueue<>(Comparator.reverseOrder());
+
+            int[] taskCounts = new int[26];
+            for (char task : tasks) {
+                taskCounts[task - 'A']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                if (taskCounts[i] != 0) {
+                    heap.offer(taskCounts[i]);
+                }
+            }
+
+            int result = 0;
+            int left = heap.size();
+            while (left != 0) {
+                List<Integer> out = new ArrayList<>();
+                // 循环n+1次从堆中取数据，如果堆中有的话取出并count-1,没有的话跳过
+                for (int i = 0; i <= n; i++) {
+                    if (!heap.isEmpty()) {
+                        int c = heap.poll();
+                        c--;
+                        out.add(c);
+                    }
+                    result++;
+                }
+
+                // 将取出的重新放回堆中
+                int curNumCount = out.size();
+                for (int c : out) {
+                    if (c != 0) {
+                        heap.add(c);
+                    }
+                }
+
+                left = heap.size();
+                if (left == 0) {
+                    result -= (n + 1 - curNumCount);
+                }
+            }
+
+            return result;
+        }
+
+        public int leastIntervalBySort(char[] tasks, int n) {
             if (n == 0) {
                 return tasks.length;
             }
