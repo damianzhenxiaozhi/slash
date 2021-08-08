@@ -81,26 +81,26 @@ public class TaskScheduler {
             }
 
             Arrays.sort(taskCount, Collections.reverseOrder());
-            int[] left = getLeftPosAndLeftCount(taskCount);
+            int leftPos = getLeftPos(taskCount);
             int result = 0;
-            while (left[0] != 0) {
-                if (left[0] >= n + 1) {
+            while (leftPos != 0) {
+                if (leftPos >= n + 1) {
                     for (int i = 0; i <= n; i++) {
                         taskCount[i]--;
                     }
                     result += (n + 1);
 
                     Arrays.sort(taskCount, Collections.reverseOrder());
-                    left = getLeftPosAndLeftCount(taskCount);
+                    leftPos = getLeftPos(taskCount);
                 } else {
-                    int leftPos = left[0];
-                    for (int i = 0; i < left[0]; i++) {
+                    int curLeftPos = leftPos;
+                    for (int i = 0; i < curLeftPos; i++) {
                         taskCount[i]--;
                     }
 
-                    left = getLeftPosAndLeftCount(taskCount);
-                    if (left[1] == 0) {
-                        result += leftPos;
+                    leftPos = getLeftPos(taskCount);
+                    if (leftPos == 0) {
+                        result += curLeftPos;
                     } else {
                         result += (n + 1);
                         Arrays.sort(taskCount, Collections.reverseOrder());
@@ -111,18 +111,16 @@ public class TaskScheduler {
             return result;
         }
 
-        private int[] getLeftPosAndLeftCount(Integer[] taskCount) {
+        private int getLeftPos(Integer[] taskCount) {
             int p = 0;
-            int c = 0;
             for (int i = 0; i < taskCount.length; i++) {
                 if (taskCount[i] == 0) {
-                    return new int[]{p, c};
+                    return p;
                 }
                 p++;
-                c += taskCount[i];
             }
 
-            return new int[]{p, c};
+            return p;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
