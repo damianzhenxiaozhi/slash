@@ -73,21 +73,20 @@ public class SortColors {
     class Solution {
         // tow points
         public void sortColors(int[] nums) {
-            int p0 = 0, p1 = 0, p2 = 0;
-            for (int i = 0; i < nums.length; i++) {
-                if (nums[i] == 0) {
-                    swap(nums, p0, i);
-                    swap(nums, p1, i);
-                    p0++;
-                    p1++;
-                    p2++;
-                } else if (nums[i] == 1) {
-                    swap(nums, p1, i);
-                    p1++;
-                    p2++;
-                } else if (nums[i] == 2) {
-                    swap(nums, p2, i);
-                    p2++;
+
+            int i = 0;
+            for (int j = 0; j < nums.length; j++) {
+                if (nums[j] == 0 || nums[j] == 1) {
+                    swap(nums, i, j);
+                    i++;
+                }
+            }
+
+            i = 0;
+            for (int j = 0; j < nums.length; j++) {
+                if (nums[j] == 0) {
+                    swap(nums, i, j);
+                    i++;
                 }
             }
         }

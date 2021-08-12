@@ -40,8 +40,26 @@ public class ShuZuZhongShuZiChuXianDeCiShuLcof {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int[] singleNumbers(int[] nums) {
-            int[] bits = new int[32];
+            int xor = 0;
+            for (int n : nums) {
+                xor ^= n;
+            }
 
+            int mask = 1;
+            while ((xor & mask) == 0) {
+                mask <<= 1;
+            }
+
+            int a = 0, b = 0;
+            for (int n : nums) {
+                if ((n & mask) != 0) {
+                    a ^= n;
+                } else {
+                    b ^= n;
+                }
+            }
+
+            return new int[] {a, b};
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
