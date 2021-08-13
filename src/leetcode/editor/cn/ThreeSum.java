@@ -55,6 +55,51 @@ public class ThreeSum {
         public List<List<Integer>> threeSum(int[] nums) {
             Arrays.sort(nums);
             List<List<Integer>> result = new ArrayList<>();
+            int n = nums.length;
+            for (int i = 0; i < n; i++) {
+                if (i > 0 && nums[i] == nums[i-1]) {
+                    continue;
+                }
+
+                int p = i + 1;
+                int q = n - 1;
+                while (p < q) {
+                    if (nums[p] + nums[q] == -nums[i]) {
+                        List<Integer> ans = new ArrayList<>();
+                        ans.add(nums[i]);
+                        ans.add(nums[p]);
+                        ans.add(nums[q]);
+                        result.add(ans);
+
+                        p++;
+                        while (p <= q && nums[p] == nums[p-1]) {
+                            p++;
+                        }
+
+                        q--;
+                        while (p <= q && nums[q] == nums[q+1]) {
+                            q--;
+                        }
+                    } else if (nums[p] + nums[q] < -nums[i]) {
+                        p++;
+                        while (p <= q && nums[p] == nums[p-1]) {
+                            p++;
+                        }
+                    } else {
+                        q--;
+                        while (p <= q && nums[q] == nums[q+1]) {
+                            q--;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<List<Integer>> threeSum2(int[] nums) {
+            Arrays.sort(nums);
+            List<List<Integer>> result = new ArrayList<>();
 
             int n = nums.length;
             Map<Integer, Integer> map = new HashMap<>();
