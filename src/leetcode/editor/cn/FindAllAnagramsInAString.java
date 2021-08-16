@@ -40,6 +40,7 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FindAllAnagramsInAString {
@@ -53,6 +54,50 @@ public class FindAllAnagramsInAString {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<Integer> findAnagrams(String s, String p) {
+            if (s.length() < p.length()) {
+                return Collections.emptyList();
+            }
+
+            List<Integer> result = new ArrayList<>();
+            int[] needs = new int[26];
+            for (int k = 0; k < p.length(); k++) {
+                needs[p.charAt(k) - 'a']++;
+            }
+
+            int[] matched = new int[26];
+            int i = 0, j = p.length();
+            for (int k = i; k < j; k++) {
+                matched[s.charAt(k) - 'a']++;
+            }
+
+            if (isSame(needs, matched)) {
+                result.add(i);
+            }
+
+            while (j < s.length()) {
+                matched[s.charAt(i) - 'a']--;
+                matched[s.charAt(j) - 'a']++;
+                i++;
+                j++;
+                if (isSame(needs, matched)) {
+                    result.add(i);
+                }
+            }
+
+            return result;
+        }
+
+        private boolean isSame(int[] needs, int[] matched) {
+            for (int i = 0; i < needs.length; i++) {
+                if (needs[i] != matched[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public List<Integer> findAnagrams2(String s, String p) {
             List<Integer> result = new ArrayList<>();
             char[] cs = s.toCharArray();
             char[] cp = p.toCharArray();
