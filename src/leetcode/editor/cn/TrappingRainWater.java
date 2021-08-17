@@ -37,30 +37,36 @@ package leetcode.editor.cn;
 public class TrappingRainWater {
     public static void main(String[] args) {
         Solution s = new TrappingRainWater().new Solution();
-        int[] height = {4, 2, 3};
+        int[] height = {4, 2, 0, 3, 2, 5};
         System.out.println(s.trap(height));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int trap(int[] height) {
-            int sum = 0;
             int n = height.length;
-            int i = 0;
-            while (i < n) {
-                int j = i + 1;
-                int curSum = 0;
-                while (j < n && height[j] < height[i]) {
-                    curSum += (height[i] - height[j]);
-                    j++;
-                }
-                if (j != n) {
-                    sum += curSum;
-                    i = j;
-                } else {
-                    i = i + 1;
+            int[] leftMax = new int[n];
+            int max = 0;
+            for (int i = 0; i < n; i++) {
+                leftMax[i] = max;
+                max = Math.max(max, height[i]);
+            }
+
+            int[] rightMax = new int[n];
+            max = 0;
+            for (int i = n-1; i >= 0; i--) {
+                rightMax[i] = max;
+                max = Math.max(max, height[i]);
+            }
+
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                int higher = Math.min(leftMax[i], rightMax[i]);
+                if (higher > height[i]) {
+                    sum += (higher - height[i]);
                 }
             }
+
             return sum;
         }
     }

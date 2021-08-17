@@ -59,7 +59,7 @@ package leetcode.editor.cn;
 public class MaximumSubarray {
     public static void main(String[] args) {
         Solution s = new MaximumSubarray().new Solution();
-        int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        int[] nums = {1};
         System.out.println(s.maxSubArray(nums));
     }
 
@@ -67,25 +67,35 @@ public class MaximumSubarray {
     class Solution {
         public int maxSubArray(int[] nums) {
             int n = nums.length;
-            int[] leftSum = new int[n];
+            int[] sums = new int[n];
             int sum = 0;
             for (int i = 0; i < n; i++) {
-                leftSum[i] = sum;
                 sum += nums[i];
+                sums[i] = sum;
             }
 
-            int[] rightSum = new int[n];
-            sum = 0;
+            int[] maxSums = new int[n];
+            int maxSum = Integer.MIN_VALUE;
             for (int i = n - 1; i >= 0; i--) {
-                rightSum[i] = sum;
-                sum += nums[i];
+                maxSum = Math.max(maxSum, sums[i]);
+                maxSums[i] = maxSum;
             }
 
-            int max = Integer.MIN_VALUE;
-            for (int i = 0; i < n; i++) {
-                if (leftSum[i] + rightSum[i] - sum > max) {
-                    max = leftSum[i] + rightSum[i] - sum;
-                }
+
+        }
+
+        public int maxSubArray2(int[] nums) {
+            if (nums.length == 0) {
+                return 0;
+            }
+
+            int[] dp = new int[nums.length];
+            dp[0] = nums[0];
+            int max = dp[0];
+
+            for (int i = 1; i < nums.length; i++) {
+                dp[i] = nums[i] + (dp[i-1] > 0 ? dp[i-1] : 0);
+                max = Math.max(max, dp[i]);
             }
 
             return max;
