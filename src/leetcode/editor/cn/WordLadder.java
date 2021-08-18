@@ -62,6 +62,15 @@ public class WordLadder {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        private class WordPair {
+            private String word;
+            private Integer count;
+            public WordPair(String word, Integer count) {
+                this.word = word;
+                this.count = count;
+            }
+        }
+
         public int ladderLength(String beginWord, String endWord, List<String> wordList) {
             Map<String, List<String>> adjMap = new HashMap<>();
             for (String word : wordList) {
@@ -74,15 +83,15 @@ public class WordLadder {
             }
 
             Set<String> visited = new HashSet<>();
-            Queue<Pair<String, Integer>> queue = new LinkedList<>();
-            queue.offer(new Pair<>(beginWord, 1));
+            Queue<WordPair> queue = new LinkedList<>();
+            queue.offer(new WordPair(beginWord, 1));
             visited.add(beginWord);
 
             while (!queue.isEmpty()) {
-                Pair<String, Integer> pair = queue.poll();
-                String newWord = pair.getKey();
+                WordPair pair = queue.poll();
+                String newWord = pair.word;
                 if (newWord.equals(endWord)) {
-                    return pair.getValue();
+                    return pair.count;
                 }
 
                 for (int i = 0; i < newWord.length(); i++) {
@@ -94,7 +103,7 @@ public class WordLadder {
                         }
 
                         visited.add(s);
-                        queue.add(new Pair<>(s, pair.getValue() + 1));
+                        queue.add(new WordPair(s, pair.count + 1));
                     }
                 }
             }
