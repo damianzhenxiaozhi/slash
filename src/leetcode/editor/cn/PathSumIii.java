@@ -30,16 +30,13 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PathSumIii {
     public static void main(String[] args) {
         Solution s = new PathSumIii().new Solution();
-        MyBinaryTree tree = new MyBinaryTree(new Integer[]{1,null,2, null, null, null,3, null, null, null, null, null, null, null,4,null,5});
-        int targetSum = 3;
+        MyBinaryTree tree = new MyBinaryTree(new Integer[]{10,5,-3,3,2,null,11,3,-2,null,1});
+        int targetSum = 8;
         System.out.println(s.pathSum(tree.getRoot(), targetSum));
     }
 
@@ -62,44 +59,47 @@ public class PathSumIii {
      */
     class Solution {
         private int count;
-        private Set<TreeNode> startNode;
 
         public int pathSum(TreeNode root, int targetSum) {
             count = 0;
-            startNode = new HashSet<>();
-            backtrace(root, new ArrayList<>(), targetSum);
+            backtrace(root, targetSum);
             return count;
         }
 
-        private void backtrace(TreeNode root, List<Integer> path, int targetSum) {
+        private Map<Integer, Integer> backtrace(TreeNode root, int targetSum) {
             if (root == null) {
-                return;
+                return Collections.emptyMap();
             }
 
-            if (path.isEmpty()) {
-                if (startNode.contains(root)) {
-                    return;
+            Map<Integer, Integer> rootSum = new HashMap<>();
+            if (root.left != null) {
+                Map<Integer, Integer> leftSum = backtrace(root.left, targetSum);
+                for (Map.Entry<Integer, Integer> entry : leftSum.entrySet()) {
+                    int val = entry.getKey() + root.val;
+                    rootSum.put(val, rootSum.getOrDefault(val, 0) + entry.getValue());
+                    if (val == targetSum) {
+                        count += entry.getValue();
+                    }
                 }
-                startNode.add(root);
             }
 
-            path.add(root.val);
-            if (pathSum(path) == targetSum) {
-                count++;
+            if (root.right != null) {
+                Map<Integer, Integer> rightSum = backtrace(root.right, targetSum);
+                for (Map.Entry<Integer, Integer> entry : rightSum.entrySet()) {
+                    int val = entry.getKey() + root.val;
+                    rootSum.put(val, rootSum.getOrDefault(val, 0) + entry.getValue());
+                    if (val == targetSum) {
+                        count += entry.getValue();
+                    }
+                }
             }
 
-            backtrace(root.left, path, targetSum);
-            path.remove(path.size() - 1);
-            path.add(root.val);
-            backtrace(root.right, path, targetSum);
-            path.remove(path.size() - 1);
+            rootSum.put(root.val, rootSum.getOrDefault(root.val, 0) + 1);
+            if (root.val == targetSum) {
+                count += 1;
+            }
 
-            backtrace(root.left, new ArrayList<>(), targetSum);
-            backtrace(root.right, new ArrayList<>(), targetSum);
-        }
-
-        private int pathSum(List<Integer> path) {
-            return path.stream().mapToInt(n -> n).sum();
+            return rootSum;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
